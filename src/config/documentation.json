@@ -1,0 +1,950 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "API Gestion de tâches.",
+    "version": "1.0.0"
+  },
+  "server": {
+    "url": "alexisboivin.ca/api",
+    "description": "Serveur d'hébergement"
+  },
+  "paths": {
+    "/api/taches/liste": {
+      "get": {
+        "description": "Retourne la liste des tâches de l'utilisateur actif.",
+        "summary": "Liste des tâches.",
+        "tags": [
+          "Tâches"
+        ],
+        "parameters": [
+          {
+            "name": "Clé d'Api",
+            "in": "header",
+            "description": "Clé de l'utilisateur autorisant l'utilisation de l'API.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succès.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "titre": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "datedebut": {
+                      "type": "date"
+                    },
+                    "dateecheance": {
+                      "type": "date"
+                    },
+                    "complete": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Il n'y a aucune tâches d'associés à l'utilisateur.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Aucune tâches ne vous est associés."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/taches": {
+      "post": {
+        "description": "Ajoute une toute nouvelle tâche à l'utilisateur actif.",
+        "summary": "Ajoute une sous-tâche",
+        "tags": [
+          "Tâches"
+        ],
+        "parameters": [
+          {
+            "name": "titre",
+            "in": "body",
+            "description": "Titre de la sous-tâche.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "description",
+            "in": "body",
+            "description": "Description détaillé de la tâche.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "datedebut",
+            "in": "body",
+            "description": "Date de début de la tâche.",
+            "required": true,
+            "schema": {
+              "type": "date"
+            }
+          },
+          {
+            "name": "dateecheance",
+            "in": "body",
+            "description": "Date de fin limtie de la tâche.",
+            "required": true,
+            "schema": {
+              "type": "date"
+            }
+          },
+          {
+            "name": "Clé d'Api",
+            "in": "header",
+            "description": "Clé de l'utilisateur autorisant l'utilisation de l'API.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succès.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "titre": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "datedebut": {
+                      "type": "date"
+                    },
+                    "dateecheance": {
+                      "type": "date"
+                    },
+                    "complete": {
+                      "type": "integer"
+                    },
+                    "soustaches": {
+                      "type": "object",
+                      "properties": {
+                        "titre": {
+                          "type": "string",
+                          "example": "Passer le balai."
+                        },
+                        "complete": {
+                          "type": "integer",
+                          "example": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/taches/statut/{id}": {
+      "put": {
+        "description": "Modifie le statut de completion de la tâche.",
+        "summary": "Modification du statut de la tâche.",
+        "tags": [
+          "Tâches"
+        ],
+        "parameters": [
+          {
+            "name": "Clé d'Api",
+            "in": "header",
+            "description": "Clé de l'utilisateur autorisant l'utilisation de l'API.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "complete",
+            "in": "body",
+            "description": "Statut de completion de la tâche.",
+            "required": true,
+            "schema": {
+              "type": "int"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identidiant unique de la tâche à modifier.",
+            "required": true,
+            "schema": {
+              "type": "int"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succès.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "titre": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "datedebut": {
+                      "type": "date"
+                    },
+                    "dateecheance": {
+                      "type": "date"
+                    },
+                    "complete": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Aucune sous-tâche ne correspond à cet identifiant.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Aucune tâches ne vous est associés."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/taches/{id}": {
+      "get": {
+        "description": "Retourne les détails d'une tâches ainsi que les sous-tâches qui lui sont associés.",
+        "summary": "Détail d'une tâche",
+        "tags": [
+          "Tâches"
+        ],
+        "paramters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identifiant unique propre à chaque tâche.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "Clé d'Api",
+            "in": "header",
+            "description": "Clé de l'utilisateur autorisant l'utilisation de l'API.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succès.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "titre": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "datedebut": {
+                      "type": "date"
+                    },
+                    "dateecheance": {
+                      "type": "date"
+                    },
+                    "complete": {
+                      "type": "integer"
+                    },
+                    "soustaches": {
+                      "type": "object",
+                      "properties": {
+                        "titre": {
+                          "type": "string",
+                          "example": "Passer le balai."
+                        },
+                        "complete": {
+                          "type": "integer",
+                          "example": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Erreur, il n'y a pas de tâche avec cet identifiant.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Il ne semble pas y avoir de tâches correspondantes."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Modifie une tâche selon son id",
+        "summary": "Modification d'une tâche",
+        "tags": [
+          "Tâches"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identifiant unique propre à chaque tâche.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "Clé d'Api",
+            "in": "header",
+            "description": "Clé de l'utilisateur autorisant l'utilisation de l'API.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succès.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "titre": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "datedebut": {
+                      "type": "date"
+                    },
+                    "dateecheance": {
+                      "type": "date"
+                    },
+                    "complete": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Erreur, il n'y a pas de tâche avec cet identifiant.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Il ne semble pas y avoir de tâches correspondantes."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Supprime une tâche selon son id ainsi que toutes les sous-tâches qui lui étaient associés.",
+        "summary": "Suppresion d'une tâche",
+        "tags": [
+          "Tâches"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identifiant unique propre à chaque tâche.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "Clé d'Api",
+            "in": "header",
+            "description": "Clé de l'utilisateur autorisant l'utilisation de l'API.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succès.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "titre": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "datedebut": {
+                      "type": "date"
+                    },
+                    "dateecheance": {
+                      "type": "date"
+                    },
+                    "complete": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Erreur, il n'y a pas de tâche avec cet identifiant.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Il ne semble pas y avoir de tâches correspondantes."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/soustache": {
+      "post": {
+        "description": "Ajoute une toute sous-tâche à la tâche dont le id est reçu en paramètre.",
+        "summary": "Ajoute une sous-tâche",
+        "tags": [
+          "sous-tâche"
+        ],
+        "paramters": [
+          {
+            "name": "titre",
+            "in": "body",
+            "description": "Titre de la sous-tâche.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identifiant unique propre à chaque tâche.",
+            "required": true,
+            "schema": {
+              "type": "id"
+            }
+          },
+          {
+            "name": "Clé d'Api",
+            "in": "header",
+            "description": "Clé de l'utilisateur autorisant l'utilisation de l'API.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succès.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "tacheid": {
+                      "type": "integer"
+                    },
+                    "titre": {
+                      "type": "string"
+                    },
+                    "complete": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/soustache/statut/{id}": {
+      "put": {
+        "description": "Modifie le statut de completion de la sous-tâche.",
+        "summary": "Modification du statut de la sous-tâche.",
+        "tags": [
+          "sous-tâche"
+        ],
+        "parameters": [
+          {
+            "name": "Clé d'Api",
+            "in": "header",
+            "description": "Clé de l'utilisateur autorisant l'utilisation de l'API.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "complete",
+            "in": "body",
+            "description": "Statut de completion de la tâche.",
+            "required": true,
+            "schema": {
+              "type": "int"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identidiant unique de la tâche à modifier.",
+            "required": true,
+            "schema": {
+              "type": "int"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succès.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "tacheid": {
+                      "type": "int"
+                    },
+                    "titre": {
+                      "type": "string"
+                    },
+                    "complete": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Aucune sous-tâche ne correspond à cet identifiant.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Aucune tâches ne vous est associés."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/soustaches/{id}": {
+      "put": {
+        "description": "Modifie une sous-tâche selon son id",
+        "summary": "Modification d'une sous-tâche",
+        "tags": [
+          "sous-tâche"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identifiant unique propre à chaque sous-tâche.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "tacheid",
+            "in": "body",
+            "description": "identifiant de la tâche à laquelle la sous-tâche est attaché.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "titre",
+            "in": "body",
+            "description": "Titre de la sous-tâche.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Clé d'Api",
+            "in": "header",
+            "description": "Clé de l'utilisateur autorisant l'utilisation de l'API.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succès.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "tacheid": {
+                      "type": "integer"
+                    },
+                    "titre": {
+                      "type": "string"
+                    },
+                    "complete": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Erreur, il n'y a pas de sous-tâche avec cet identifiant.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Il ne semble pas y avoir de tâches correspondantes."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Supprime une sous-tâche selon son id.",
+        "summary": "Suppresion d'une sous-tâche",
+        "tags": [
+          "sous-tâche"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identifiant unique propre à chaque sous-tâche.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "Clé d'Api",
+            "in": "header",
+            "description": "Clé de l'utilisateur autorisant l'utilisation de l'API.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succès.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "tacheid": {
+                      "type": "integer"
+                    },
+                    "titre": {
+                      "type": "string"
+                    },
+                    "complete": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Erreur, il n'y a pas de sous-tâche avec cet identifiant.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Il ne semble pas y avoir de sous-tâche correspondantes."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/utilisateur/ajouter": {
+      "post": {
+        "description": "Crée un nouvel utilisateur et retourne sa clé d'Api.",
+        "summary": "Création d'un nouvel utilisateur.",
+        "tags": [
+          "Utilisateur"
+        ],
+        "parameters": [
+          {
+            "name": "courriel",
+            "in": "body",
+            "description": "Courriel de l'utilisateur",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "Mot de passe de l'utilisateur.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nom",
+            "in": "body",
+            "description": "Nom de l'utilisateur.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pprenom",
+            "in": "body",
+            "description": "Nom de l'utilisateur.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succès.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "nom": {
+                      "type": "string"
+                    },
+                    "prenom": {
+                      "type": "string"
+                    },
+                    "courriel": {
+                      "type": "string"
+                    },
+                    "cle_api": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/utilisateur/cle": {
+      "put": {
+        "description": "Crée une nouvelle clé d'Api pour l'utilisateur donnée et la retourne.",
+        "summary": "Nouvelle clé d'Api.",
+        "tags": [
+          "Utilisateur"
+        ],
+        "parameters": [
+          {
+            "name": "courriel",
+            "in": "body",
+            "description": "Courriel de l'utilisateur",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "Mot de passe de l'utilisateur.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succès.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "nom": {
+                      "type": "string"
+                    },
+                    "prenom": {
+                      "type": "string"
+                    },
+                    "courriel": {
+                      "type": "string"
+                    },
+                    "cle_api": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
