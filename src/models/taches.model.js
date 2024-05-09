@@ -29,7 +29,7 @@ Tache.AfficherListe = (complete, id) => {
 
 Tache.AfficherDetailTache = (id) => {
     return new Promise((resolve, reject) => {
-        const requete = `SELECT t.titre, t.descrption, t.date_debut, t.date_echeance FROM taches t WHERE id = ?`;
+        const requete = `SELECT t.titre, t.description, t.date_debut, t.date_echeance FROM taches t WHERE id = ?`;
         const params = [id];
 
         sql.query(requete, params, (erreur, resultat) => {
@@ -45,8 +45,12 @@ Tache.AfficherDetailTache = (id) => {
 
 Tache.AjouterTache = (id, titre, description, datedebut, dateecheance) => {
     return new Promise((resolve, reject) => {
+
+    const debut = new Date(datedebut);
+    const fin = new Date(dateecheance);
+
         const requete = `INSERT INTO taches (utilisateur_id, titre, description, date_debut, date_echeance, complete) VALUES (?, ?, ?, ?, ?, ?)`;
-        const params = [id, titre, description, datedebut, dateecheance, 0];
+        const params = [id, titre, description, debut, fin, 0];
 
         sql.query(requete, params, (erreur, resultat) => {
             if (erreur){
@@ -83,5 +87,17 @@ Tache.ModifierStatutTache = (id, complete) => {
     })
 }
 
+Tache.SupprimerTache = (id) => {
+    return new Promise((resolve, reject) => {
+        const requete = `DELETE FROM taches WHERE id = ?`;
+        const params = [id]
+        sql.query(requete, params, (erreur, resultat) => {
+            if (erreur) {
+                reject(erreur);
+            }
+            resolve(resultat);
+        });
+    })
+}
 
 module.exports = Tache;

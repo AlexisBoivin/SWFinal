@@ -1,4 +1,7 @@
 const sql = require("../config/db.js");
+// const { utilisateur_id } = require("./taches.model.js");
+const bcrypt = require('bcrypt');
+const {v4: uuidv4} = require('uuid');
 
 const Utilisateur = (utilisateur) => {
     this.id = utilisateur.id;
@@ -8,6 +11,7 @@ const Utilisateur = (utilisateur) => {
     this.cleapi = utilisateur.cleapi;
     this.password = utilisateur.password;
 };
+
 
 Utilisateur.trouverUtilisateur = (cleApi) => {
     return new Promise((resolve, reject) => {
@@ -20,6 +24,7 @@ Utilisateur.trouverUtilisateur = (cleApi) => {
                 reject(erreur);
             }
             // Sinon je retourne le résultat sans faire de validation, c'est possible que le résultat soit vide
+            console.log(resultat[0].id);
             resolve(resultat);
         });
     });
@@ -28,7 +33,7 @@ Utilisateur.trouverUtilisateur = (cleApi) => {
 
 
 //Extrait de code tiré des notes de cours.
-exports.validationCle = (cleApi) => {
+Utilisateur.validationCle = (cleApi) => {
     return new Promise((resolve, reject) => {
         const requete = 'SELECT COUNT(*) AS nbUsager FROM utilisateur u WHERE cle_api = ?; ';
         const parametres = [cleApi];
@@ -38,16 +43,18 @@ exports.validationCle = (cleApi) => {
                 console.log(`Erreur sqlState ${erreur.sqlState} : ${erreur.sqlMessage}`);
                 reject(erreur);
             }
+            console.log(resultat);
             resolve(resultat[0].nbUsager > 0);   
         });
     });
 }
 
 
-exports.AjouterUtilisateur = (courriel, password, prenom, nom) => {
+Utilisateur.AjouterUtilisateur = (courriel, password, prenom, nom) => {
     return new Promise ((resolve, reject) => {
+        const costFactor = 10;
         const cle_api = uuidv4();
-        const requete = 'INSERT INTO utilisateurs VALUES (?, ?, ?, ?, ?);';
+        const requete = 'INSERT INTO utilisateur (nom, prenom, courriel, cle_api, password) VALUES (?, ?, ?, ?, ?);';
         bcrypt.hash(password, costFactor)
         .then(safe => {
             const params = [nom, prenom, courriel, cle_api, safe];
@@ -55,7 +62,7 @@ exports.AjouterUtilisateur = (courriel, password, prenom, nom) => {
                 if (erreur) {
                     reject(erreur);
                 }
-                resolve(resultat);
+                resolve(cle_api);
             })
         })
         .catch(err => console.error(err.message))
@@ -63,7 +70,7 @@ exports.AjouterUtilisateur = (courriel, password, prenom, nom) => {
     })
 }
 
-Utilisateur.NouvelleCleApi = (courriel, password) => {
+Utilisateur.NouvelleCleApi = async (courriel, password) => {
     return new Promise((resolve, reject) => {
         const requete = `UPDATE utilisateur SET cle_api = ? WHERE courriel = ? and password = ?`;
         const cle_api = uuidv4();
@@ -72,7 +79,23 @@ Utilisateur.NouvelleCleApi = (courriel, password) => {
             if (erreur) {
                 reject(erreur);
             }
-            resolve(resultat);
+            resolve(cle_api);
         });
     })
 }
+
+
+Utilisateur.TrouverHash = (courriel) => {
+    return new Promise((resolve, reject) => {
+        const requete = `SELECT password FROM utilisateur WHERE courriel = ?`;
+        const params = [courriel];
+        sql.query(requete, params, (erreur, resultat) => {
+            if (erreur) {
+                reject(erreur);
+            }
+            resolve(resultat[0])
+        })
+    })
+}
+
+module.exports = Utilisateur;

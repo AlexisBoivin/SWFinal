@@ -3,50 +3,51 @@ const utilisateurModel = require("../models/utilisateur.model.js")
 const soustacheModel = require("../models/soustache.model.js")
 // Route 1: Afficher la liste de toutes les tâches de l'usager.
 // Par défaut, seulement les tâches incomplètes seront affichées, mais on doit pouvoir permettre l'option de les afficher toutes.
-exports.AfficherListe = (req, res) => {
-    const id = 0;
-    const cleApi = req.headers.authorization.split(' ')[1];
-    id = utilisateurModel.trouverUtilisateur(cleApi).id;
-
-    if (!req.query.complete) {
-        req.query.page = 0;
-    }
-    tachesModel.AfficherListe(req.query.complete, id)
-        .then((lestaches) => {
-            if (!lestaches[0]) {
-                res.status(404);
-                res.send({
-                    message: `Aucune tâches ne vous est associés.`
-                });
-                return;
-            }
-            res.send({
-                message: "Voici la liste de vos tâches.",
-                tache: {
-                    id: latache.id,
-                    titre: latache.titre,
-                    description: latache.description,
-                    datedebut: latache.datedebut,
-                    dateecheance: latache.dateecheance,
-                    complete: latache.complete
+exports.AfficherListe = async (req, res) => {
+    
+        const cleApi = req.headers.authorization.split(' ')[0];
+        let id = -1;
+        await utilisateurModel.trouverUtilisateur(cleApi)
+            .then((utilisateur) =>{
+                id = utilisateur[0].id;
+            })
+        
+        let complete = 0;
+        if (req.query.complete) {
+            complete = req.query.complete;
+        }
+        tachesModel.AfficherListe(complete, id)
+            .then((latache) => {
+                if (!latache[0]) {
+                    res.status(404);
+                    res.send({
+                        message: `Aucune tâches ne vous est associés.`
+                    });
+                    return;
                 }
-
+                res.send({
+                    message: "Voici la liste de vos tâches.",
+                    tache: latache
+                });
+            })
+            .catch((erreur) => {
+                console.log('Erreur : ', erreur);
+                res.status(500)
+                res.send({
+                    message: "Erreur lors de la récupération des tâches."
+                });
             });
-        })
-        .catch((erreur) => {
-            console.log('Erreur : ', erreur);
-            res.status(500)
-            res.send({
-                message: "Erreur lors de la récupération des tâches."
-            });
-        });
+    
+    // catch (erreur) {
+    //     console.log('Il y a eu une erreur lors du traitement des données:');
+    // }
 };
 
 
 //AfficherDetailTaches
 // Áffiche le titre de la tache, sa description, ,sa date de début et d'échéance et la liste de ses sous-taches ainsi qu'un indiquant si la sous taches est terminé.
 exports.AfficherDetailTache = (req, res) => {
-    tachesModel.AfficherDetailTache(req.query.id)
+    tachesModel.AfficherDetailTache(req.params.id)
         .then((latache) => {
             if (!latache[0]) {
                 res.status(404);
@@ -55,22 +56,17 @@ exports.AfficherDetailTache = (req, res) => {
                 });
                 return;
             }
-            soustacheModel.SoustacheTache(latache.id)
-            .then((lessoustaches) => {
-                res.send({
-                    message: "Voici les informations sur la tâche avec l'identifiant " + latache.id + ".",
-                    tache: {
-                        id: latache.id,
-                        titre: latache.titre,
-                        description: latache.description,
-                        datedebut: latache.datedebut,
-                        dateecheance: latache.dateecheance,
-                        complete: latache.complete,
-                        soustaches: lessoustaches
-                    }
-    
-                });
-            })
+            soustacheModel.SoustacheTache(req.params.id)
+                .then((lessoustaches) => {
+                    res.send({
+                        message: "Voici les informations sur la tâche avec l'identifiant " + req.params.id + ".",
+                        tache: {
+                            detail:latache,
+                            soustaches: lessoustaches
+                        }
+
+                    });
+                })
 
         })
         .catch((erreur) => {
@@ -83,30 +79,29 @@ exports.AfficherDetailTache = (req, res) => {
 };
 
 // Ajouter une tâche
-exports.AjouterTache = (req, res) => {
-    if (!req.body.titre || !req.body.description || req.body.datedebut || req.body.dateecheance) {
+exports.AjouterTache = async (req, res) => {
+    if (!req.body.titre || !req.body.description || !req.body.datedebut || !req.body.dateecheance) {
         res.status(420)
         res.send({
             message: "Il y a des paramètres manquant. Pour connaitre les paramètres nécéssaires, référer vous à l'url /api/docs pour la documentation."
         })
     }
-
-    const cleApi = req.headers.authorization.split(' ')[1];
-    const id = utilisateurModel.trouverUtilisateur(cleApi);
+    const cleApi = req.headers.authorization.split(' ')[0];
+    let id = -1;
+    await utilisateurModel.trouverUtilisateur(cleApi)
+        .then((utilisateur) =>{
+            id = utilisateur[0].id;
+        })
 
     tachesModel.AjouterTache(id, req.body.titre, req.body.description, req.body.datedebut, req.body.dateecheance)
         .then((latache) => {
             res.send({
                 message: "La tâche " + req.body.titre + " a été ajouté avec succès",
-
                 tache: {
-                    id: latache.id,
-                    utilisateurid: latache.utilisateurid,
-                    titre: latache.titre,
-                    description: latache.description,
-                    datedebut: latache.datedebut,
-                    dateecheance: latache.dateecheance,
-                    complete: latache.complete
+                    titre: req.body.stitre,
+                    description: req.body.description,
+                    datedebut: req.body.datedebut,
+                    dateecheance: req.body.dateecheance
                 }
 
             });
@@ -116,9 +111,10 @@ exports.AjouterTache = (req, res) => {
             console.log('Erreur : ', erreur);
             res.status(500)
             res.send({
-                message: "Erreur lors de la création d'un nouveau Pokémon. "
+                message: "Erreur lors de la création d'une nouvelle tâche. "
             });
         });
+
 };
 
 
@@ -130,7 +126,7 @@ exports.ModifierTache = (req, res) => {
             message: "Il faut spécifier quelle tâche est à modifier avec son identifiant."
         })
     }
-    if (!req.body.titre || !req.body.ddescription || req.body.datedebut || req.body.dateecheance) {
+    if (!req.body.titre || !req.body.description || !req.body.datedebut || !req.body.dateecheance) {
         res.status(420)
         res.send({
             message: "Il y a des paramètres manquant. Pour connaitre les paramètres nécéssaires, référer vous à l'url /api/docs pour la documentation."
@@ -148,20 +144,9 @@ exports.ModifierTache = (req, res) => {
                 return;
             }
             tachesModel.ModifierTache(req.params.id, req.body.titre, req.body.description, req.body.datedebut, req.body.dateecheance)
-
                 .then((tachechanger) => {
                     res.send({
                         message: "La tâche" + req.params.id + " a été modifié avec succès",
-
-                        tache: {
-                            id: req.params.id,
-                            titre: tachechanger.titre,
-                            description: tachechanger.description,
-                            datedebut: tachechanger.datedebut,
-                            dateecheance: tachechanger.dateecheance,
-                            complete: tachechanger.complete
-                        }
-
                     });
 
                 })
@@ -273,19 +258,8 @@ exports.SupprimerTache = (req, res) => {
                 .then((tachesupprimer) => {
 
                     res.send({
-                        message: "La tâche " + req.params.id + " a été supprimé avec succès",
-
-                        tache: {
-                            id: req.params.id,
-                            titre: tachesupprimer.titre,
-                            description: tachesupprimer.description,
-                            datedebut: tachesupprimer.datedebut,
-                            dateecheance: tachesupprimer.dateecheance,
-                            complete: tachesupprimer.complete
-                        }
-
+                        message: "La tâche " + req.params.id + " a été supprimé avec succès"
                     });
-
                 })
 
                 .catch((erreur) => {
@@ -315,17 +289,16 @@ exports.AjouterSousTache = (req, res) => {
             message: "Il y a des paramètres manquant. Pour connaitre les paramètres nécéssaires, référer vous à l'url /api/docs pour la documentation."
         })
     }
-
     soustacheModel.AjouterSousTache(req.body.tacheid, req.body.titre)
         .then((lasoustache) => {
             res.send({
                 message: "La tâche " + req.body.titre + " a été ajouté avec succès",
 
                 soustache: {
-                    id: lasoustache.id,
-                    tacheid: lasoustache.tacheid,
-                    titre: lasoustache.titre,
-                    complete: lasoustache.complete
+                    id:lasoustache.insertId,
+                    tache_id: req.body.tache_id,
+                    titre: req.body.titre,
+                    complete: 0 
                 }
 
             });
@@ -375,9 +348,8 @@ exports.ModifierSousTache = (req, res) => {
 
                         soustache: {
                             id: req.params.id,
-                            tacheid: soustachechanger.tacheid,
-                            titre: soustachechanger.titre,
-                            complete: soustachechanger.complete
+                            tacheid: req.body.tacheid,
+                            titre: req.body.titre
                         }
 
                     });
@@ -432,15 +404,11 @@ exports.ModifierStatutSousTache = (req, res) => {
 
                 .then((soustachechanger) => {
                     res.send({
-                        message: "Le statut de la sous-tâche" + req.params.id + " a été modifié avec succès",
-
-                        soustache: {
-                            id: req.params.id,
-                            tacheid: soustachechanger.tacheid,
-                            titre: soustachechanger.titre,
-                            complete: soustachechanger.complete
+                        message: "Le statut de la sous-tâche" + req.params.id + " a été modifié avec succès.",
+                        soustache:{
+                            id:req.params.id,
+                            complete:req.body.complete
                         }
-
                     });
 
                 })
@@ -471,7 +439,7 @@ exports.SupprimerSousTache = (req, res) => {
         })
     }
     //Vérification de l'existence de la sous-tâche.
-    tachesModel.TrouverSousTache(req.params.id)
+    soustacheModel.TrouverSousTache(req.params.id)
         .then((lasoustache) => {
             if (!lasoustache[0]) {
                 res.status(404);

@@ -12,7 +12,7 @@ const Soustache = (soustache) => {
 
 Soustache.AjouterSousTache = (id, titre) => {
     return new Promise((resolve, reject) => {
-        const requete = `INSERT INTO sous_taches (tache_id,titre, complete) VALUES (?, ?, ?)`;
+        const requete = `INSERT INTO sous_taches (tache_id, titre, complete) VALUES (?, ?, ?)`;
         const params = [id, titre, 0];
 
         sql.query(requete, params, (erreur, resultat) => {
@@ -28,7 +28,7 @@ Soustache.AjouterSousTache = (id, titre) => {
 
 Soustache.ModifierSousTache = (id, tacheid, titre) => {
     return new Promise((resolve, reject) => {
-        const requete = `UPDATE sous_taches SET tache_id, titre = ? WHERE id = ?`;
+        const requete = `UPDATE sous_taches SET tache_id = ?, titre = ? WHERE id = ?`;
         const params = [tacheid, titre, id]
         sql.query(requete, params, (erreur, resultat) => {
             if (erreur) {

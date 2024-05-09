@@ -80,7 +80,7 @@
     "/api/taches": {
       "post": {
         "description": "Ajoute une toute nouvelle tâche à l'utilisateur actif.",
-        "summary": "Ajoute une sous-tâche",
+        "summary": "Ajoute une tâche",
         "tags": [
           "Tâches"
         ],
@@ -88,7 +88,7 @@
           {
             "name": "titre",
             "in": "body",
-            "description": "Titre de la sous-tâche.",
+            "description": "Titre de la tâche.",
             "required": true,
             "schema": {
               "type": "string"
@@ -109,16 +109,18 @@
             "description": "Date de début de la tâche.",
             "required": true,
             "schema": {
-              "type": "date"
+              "type": "date",
+              "exemple": "yyyy-MM-jj"
             }
           },
           {
             "name": "dateecheance",
             "in": "body",
-            "description": "Date de fin limtie de la tâche.",
+            "description": "Date de fin limite de la tâche.",
             "required": true,
             "schema": {
-              "type": "date"
+              "type": "date",
+              "exemple": "yyyy-MM-jj"
             }
           },
           {
@@ -246,7 +248,7 @@
             }
           },
           "404": {
-            "description": "Aucune sous-tâche ne correspond à cet identifiant.",
+            "description": "Aucune tâche ne correspond à cet identifiant.",
             "content": {
               "application/json": {
                 "schema": {
@@ -266,7 +268,7 @@
     },
     "/api/taches/{id}": {
       "get": {
-        "description": "Retourne les détails d'une tâches ainsi que les sous-tâches qui lui sont associés.",
+        "description": "Retourne les détails d'une tâche ainsi que les sous-tâches qui lui sont associés.",
         "summary": "Détail d'une tâche",
         "tags": [
           "Tâches"
@@ -376,6 +378,44 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "Titre",
+            "in": "body",
+            "description": "Nouveau titre de la tâche.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Description",
+            "in": "body",
+            "description": "Nouvelle description de la tâche.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "datedebut",
+            "in": "body",
+            "description": "Nouvelle date de début de la tâche",
+            "required": true,
+            "schema": {
+              "type": "date",
+              "exemple": "yyyy-MM-jj"
+            }
+          },
+          {
+            "name": "dateecheance",
+            "in": "body",
+            "description": "Nouvelle date de fin de la tâche.",
+            "required": true,
+            "schema": {
+              "type": "date",
+              "exemple": "yyyy-MM-jj"
             }
           }
         ],
@@ -504,9 +544,9 @@
         }
       }
     },
-    "/api/soustache": {
+    "/api/taches/soustache": {
       "post": {
-        "description": "Ajoute une toute sous-tâche à la tâche dont le id est reçu en paramètre.",
+        "description": "Ajoute une toute nouvelle sous-tâche à la tâche dont le id est reçu en paramètre.",
         "summary": "Ajoute une sous-tâche",
         "tags": [
           "sous-tâche"
@@ -523,7 +563,7 @@
           },
           {
             "name": "id",
-            "in": "path",
+            "in": "body",
             "description": "Identifiant unique propre à chaque tâche.",
             "required": true,
             "schema": {
@@ -568,7 +608,7 @@
         }
       }
     },
-    "/api/soustache/statut/{id}": {
+    "/api/taches/soustache/statut/{id}": {
       "put": {
         "description": "Modifie le statut de completion de la sous-tâche.",
         "summary": "Modification du statut de la sous-tâche.",
@@ -648,7 +688,7 @@
         }
       }
     },
-    "/api/soustaches/{id}": {
+    "/api/taches/soustache/{id}": {
       "put": {
         "description": "Modifie une sous-tâche selon son id",
         "summary": "Modification d'une sous-tâche",
@@ -842,7 +882,7 @@
             }
           },
           {
-            "name": "pprenom",
+            "name": "prenom",
             "in": "body",
             "description": "Nom de l'utilisateur.",
             "required": false,

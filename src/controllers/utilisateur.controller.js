@@ -7,21 +7,18 @@ exports.AjouterUtilisateur = (req, res) => {
             message: "Il y a des paramètres manquant. Pour connaitre les paramètres nécéssaires, référer vous à l'url /api/docs pour la documentation."
         })
     }
+    if(!req.body.nom){
+        req.body.nom = "";
+    }
+    if(!req.body.prenom){
+        req.body.prenom = "";
+    }
+
 
     utilisateurModel.AjouterUtilisateur(req.body.courriel, req.body.password, req.body.prenom, req.body.nom)
-        .then((utilisateur) => {
+        .then((cleapi) => {
             res.send({
-                message: "L'utilisateur a été ajouté avec succès avec la clé d'API " + utilisateur.cle_api,
-
-                Utilisateur: {
-                    id: utilisateur.id,
-                    nom: utilisateur.nom,
-                    prenom: utilisateur.prenom,
-                    courriel: utilisateur.courriel,
-                    cle_api: utilisateur.cle_api,
-                    password: utilisateur.password
-                }
-
+                message: "L'utilisateur a été ajouté avec succès avec la clé d'API " + cleapi
             });
 
         })
@@ -29,22 +26,24 @@ exports.AjouterUtilisateur = (req, res) => {
             console.log('Erreur : ', erreur);
             res.status(500)
             res.send({
-                message: "Erreur lors de la création d'un nouveau Pokémon. "
+                message: "Erreur lors de la création d'un nouvel utilisateur. "
             });
         });
 };
 
 
-exports.NouvelleCleUtilisateur = (req, res) => {
-    if (!req.params.courriel || !req.params.password) {
+exports.NouvelleCleUtilisateur = async (req, res) => {
+    if (!req.body.courriel || !req.body.password) {
         res.status(420)
         res.send({
             message: "Il y a des paramètres manquant. Pour connaitre les paramètres nécéssaires, référer vous à l'url /api/docs pour la documentation."
         })
     }
-    utilisateurModel.NouvelleCleUtilisateur(req.params.courriel, req.params.password)
-    .then((utilisateur) =>{
-        if(!utilsiateur[0])
+    const hash = await utilisateurModel.TrouverHash(req.body.courriel);
+
+    utilisateurModel.NouvelleCleApi(req.body.courriel, hash.password)
+    .then((cleapi) =>{
+        if(!cleapi[0])
         {
             res.send({
                 message: "Il n'existe pas d'utilisateur avec ces identifiants."
@@ -53,16 +52,7 @@ exports.NouvelleCleUtilisateur = (req, res) => {
         else
         {
             res.send({
-                message: "Voici votre nouvelle clé d'API " + utilisateur.cle_api,
-    
-                Utilisateur: {
-                    id: utilisateur.id,
-                    nom: utilisateur.nom,
-                    prenom: utilisateur.prenom,
-                    courriel: utilisateur.courriel,
-                    cle_api: utilisateur.cle_api,
-                    password: utilisateur.password
-                }
+                message: "Voici votre nouvelle clé d'API " + cleapi
     
             });
         }
