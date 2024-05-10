@@ -53,8 +53,8 @@ exports.NouvelleCleUtilisateur = async (req, res) => {
         else
         {
             res.send({
-                message: "Voici votre nouvelle clé d'API " + cleapi
-    
+                message: "Voici votre nouvelle clé d'API " + cleapi,
+                cleapi:cleapi
             });
         }
     })
