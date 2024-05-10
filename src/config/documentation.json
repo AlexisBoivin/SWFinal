@@ -35,23 +35,30 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "id": {
-                      "type": "integer"
-                    },
-                    "titre": {
+                    "message": {
                       "type": "string"
                     },
-                    "description": {
-                      "type": "string"
-                    },
-                    "datedebut": {
-                      "type": "date"
-                    },
-                    "dateecheance": {
-                      "type": "date"
-                    },
-                    "complete": {
-                      "type": "integer"
+                    "latache": {
+                      "type": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "titre": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "datedebut": {
+                          "type": "date"
+                        },
+                        "dateecheance": {
+                          "type": "date"
+                        },
+                        "complete": {
+                          "type": "integer"
+                        }
+                      }
                     }
                   }
                 }
