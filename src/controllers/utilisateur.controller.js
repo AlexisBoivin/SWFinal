@@ -18,7 +18,8 @@ exports.AjouterUtilisateur = (req, res) => {
     utilisateurModel.AjouterUtilisateur(req.body.courriel, req.body.password, req.body.prenom, req.body.nom)
         .then((cleapi) => {
             res.send({
-                message: "L'utilisateur a été ajouté avec succès avec la clé d'API " + cleapi
+                message: "L'utilisateur a été ajouté avec succès avec la clé d'API " + cleapi,
+                cleapi:cleapi
             });
 
         })
