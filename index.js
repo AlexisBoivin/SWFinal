@@ -1,4 +1,5 @@
 const express = require ('express');
+const cors = require('cors');
 
 // documentation
 const swaggerUi = require('swagger-ui-express');
@@ -11,7 +12,7 @@ const swaggerOptions = {
 const app = express();
 const PORT = 3000;
 
-
+app.use(cors());
 const morgan = require('morgan')
 const fs = require('fs');
 const path = require('path');
