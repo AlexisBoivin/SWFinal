@@ -149,34 +149,42 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "id": {
-                      "type": "integer"
-                    },
-                    "titre": {
+                    "message":{
                       "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    },
-                    "datedebut": {
-                      "type": "date"
-                    },
-                    "dateecheance": {
-                      "type": "date"
-                    },
-                    "complete": {
-                      "type": "integer"
-                    },
-                    "soustaches": {
-                      "type": "object",
-                      "properties": {
+                    }, 
+                    "tache": {
+                      "type":"object",
+                      "properties":{
+                        "id": {
+                          "type": "integer"
+                        },
                         "titre": {
-                          "type": "string",
-                          "example": "Passer le balai."
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "datedebut": {
+                          "type": "date"
+                        },
+                        "dateecheance": {
+                          "type": "date"
                         },
                         "complete": {
-                          "type": "integer",
-                          "example": 0
+                          "type": "integer"
+                        },
+                        "soustaches": {
+                          "type": "object",
+                          "properties": {
+                            "titre": {
+                              "type": "string",
+                              "example": "Passer le balai."
+                            },
+                            "complete": {
+                              "type": "integer",
+                              "example": 0
+                            }
+                          }
                         }
                       }
                     }
@@ -232,23 +240,31 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "id": {
-                      "type": "integer"
+                    "message":{
+                      "type":"string"
                     },
-                    "titre": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    },
-                    "datedebut": {
-                      "type": "date"
-                    },
-                    "dateecheance": {
-                      "type": "date"
-                    },
-                    "complete": {
-                      "type": "integer"
+                    "tache":{
+                      "type":"object",
+                      "properties":{
+                        "id": {
+                          "type": "integer"
+                        },
+                        "titre": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "datedebut": {
+                          "type": "date"
+                        },
+                        "dateecheance": {
+                          "type": "date"
+                        },
+                        "complete": {
+                          "type": "integer"
+                        }
+                      }
                     }
                   }
                 }
@@ -309,34 +325,47 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "id": {
-                      "type": "integer"
+                    "message":{
+                      "type":"string"
                     },
-                    "titre": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    },
-                    "datedebut": {
-                      "type": "date"
-                    },
-                    "dateecheance": {
-                      "type": "date"
-                    },
-                    "complete": {
-                      "type": "integer"
-                    },
-                    "soustaches": {
-                      "type": "object",
-                      "properties": {
-                        "titre": {
-                          "type": "string",
-                          "example": "Passer le balai."
+                    "tache":{
+                      "type":"object",
+                      "properties":{
+                        "detail":{
+                          "type":"object",
+                          "properties":{
+                            "id": {
+                              "type": "integer"
+                            },
+                            "titre": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "datedebut": {
+                              "type": "date"
+                            },
+                            "dateecheance": {
+                              "type": "date"
+                            },
+                            "complete": {
+                              "type": "integer"
+                            }
+                          }
                         },
-                        "complete": {
-                          "type": "integer",
-                          "example": 0
+                        "soustaches": {
+                          "type": "object",
+                          "properties": {
+                            "titre": {
+                              "type": "string",
+                              "example": "Passer le balai."
+                            },
+                            "complete": {
+                              "type": "integer",
+                              "example": 0
+                            }
+                          }
                         }
                       }
                     }
@@ -435,23 +464,8 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "id": {
-                      "type": "integer"
-                    },
-                    "titre": {
+                    "message": {
                       "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    },
-                    "datedebut": {
-                      "type": "date"
-                    },
-                    "dateecheance": {
-                      "type": "date"
-                    },
-                    "complete": {
-                      "type": "integer"
                     }
                   }
                 }
@@ -510,23 +524,8 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "id": {
-                      "type": "integer"
-                    },
-                    "titre": {
+                    "message": {
                       "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    },
-                    "datedebut": {
-                      "type": "date"
-                    },
-                    "dateecheance": {
-                      "type": "date"
-                    },
-                    "complete": {
-                      "type": "integer"
                     }
                   }
                 }
@@ -596,18 +595,27 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "id": {
-                      "type": "integer"
+                    "message":{
+                      "type":"string"
                     },
-                    "tacheid": {
-                      "type": "integer"
-                    },
-                    "titre": {
-                      "type": "string"
-                    },
-                    "complete": {
-                      "type": "integer"
+                    "soustache":{
+                      "type":"object",
+                      "properties":{
+                        "id": {
+                          "type": "integer"
+                        },
+                        "tacheid": {
+                          "type": "integer"
+                        },
+                        "titre": {
+                          "type": "string"
+                        },
+                        "complete": {
+                          "type": "integer"
+                        }
+                      }
                     }
+
                   }
                 }
               }
@@ -660,18 +668,21 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "id": {
-                      "type": "integer"
+                    "message":{
+                      "type":"string"
                     },
-                    "tacheid": {
-                      "type": "int"
-                    },
-                    "titre": {
-                      "type": "string"
-                    },
-                    "complete": {
-                      "type": "integer"
+                    "soustache":{
+                      "type":"object",
+                      "properties":{
+                        "id": {
+                          "type": "integer"
+                        },
+                        "complete": {
+                          "type": "integer"
+                        }
+                      }
                     }
+
                   }
                 }
               }
@@ -749,18 +760,24 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "id": {
-                      "type": "integer"
+                    "message":{
+                      "type":"string"
                     },
-                    "tacheid": {
-                      "type": "integer"
-                    },
-                    "titre": {
-                      "type": "string"
-                    },
-                    "complete": {
-                      "type": "integer"
+                    "soustache":{
+                      "type":"object",
+                      "properties":{
+                        "id": {
+                          "type": "integer"
+                        },
+                        "tacheid": {
+                          "type": "integer"
+                        },
+                        "titre": {
+                          "type": "string"
+                        }
+                      }
                     }
+
                   }
                 }
               }
@@ -817,18 +834,26 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "integer"
+                  "properties":{
+                    "message":{
+                      "type":"string"
                     },
-                    "tacheid": {
-                      "type": "integer"
-                    },
-                    "titre": {
-                      "type": "string"
-                    },
-                    "complete": {
-                      "type": "integer"
+                    "soustache":{
+                      "type":"object",
+                      "properties":{
+                        "id": {
+                          "type": "integer"
+                        },
+                        "tacheid": {
+                          "type": "integer"
+                        },
+                        "titre": {
+                          "type": "string"
+                        },
+                        "complete": {
+                          "type": "integer"
+                        }
+                      }
                     }
                   }
                 }
@@ -907,22 +932,10 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "id": {
-                      "type": "integer"
-                    },
-                    "nom": {
+                    "message": {
                       "type": "string"
                     },
-                    "prenom": {
-                      "type": "string"
-                    },
-                    "courriel": {
-                      "type": "string"
-                    },
-                    "cle_api": {
-                      "type": "string"
-                    },
-                    "password": {
+                    "cleapi": {
                       "type": "string"
                     }
                   }
@@ -967,23 +980,11 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "integer"
-                    },
-                    "nom": {
+                  "properties":  {
+                    "message": {
                       "type": "string"
                     },
-                    "prenom": {
-                      "type": "string"
-                    },
-                    "courriel": {
-                      "type": "string"
-                    },
-                    "cle_api": {
-                      "type": "string"
-                    },
-                    "password": {
+                    "cleapi": {
                       "type": "string"
                     }
                   }
