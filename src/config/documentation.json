@@ -39,7 +39,8 @@
                       "type": "string"
                     },
                     "latache": {
-                      "type": {
+                      "type": "object",
+                      "properties": {
                         "id": {
                           "type": "integer"
                         },
