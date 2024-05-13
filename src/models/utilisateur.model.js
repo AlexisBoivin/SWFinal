@@ -53,7 +53,7 @@ Utilisateur.validationCle = (cleApi) => {
 Utilisateur.AjouterUtilisateur = (courriel, password, prenom, nom) => {
     return new Promise ((resolve, reject) => {
         const costFactor = 10;
-        const cle_api = uuidv4();
+        const cle_api = uuidv4().slice(0,30);
         const requete = 'INSERT INTO utilisateur (nom, prenom, courriel, cle_api, password) VALUES (?, ?, ?, ?, ?);';
         bcrypt.hash(password, costFactor)
         .then(safe => {
@@ -73,7 +73,7 @@ Utilisateur.AjouterUtilisateur = (courriel, password, prenom, nom) => {
 Utilisateur.NouvelleCleApi = async (courriel, password) => {
     return new Promise((resolve, reject) => {
         const requete = `UPDATE utilisateur SET cle_api = ? WHERE courriel = ? and password = ?`;
-        const cle_api = uuidv4();
+        const cle_api = uuidv4().slice(0,30);
         const params = [cle_api, courriel, password]
         sql.query(requete, params, (erreur, resultat) => {
             if (erreur) {
